@@ -200,7 +200,7 @@ func emitWorkflowCompletionStats(
 			tag.FailoverMsg(string(event.WorkflowExecutionContinuedAsNewEventAttributes.FailureDetails)),
 			tag.TimerTaskStatus(*event.WorkflowExecutionContinuedAsNewEventAttributes.BackoffStartIntervalInSeconds),
 			tag.WorkflowCronSchedule(event.WorkflowExecutionStartedEventAttributes.CronSchedule),
-	)
+		)
 	default:
 		scope.IncCounter(metrics.WorkflowCompletedUnknownType)
 		logger.Warn("Workflow completed with an unknown event type",
