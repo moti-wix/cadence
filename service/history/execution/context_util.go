@@ -198,9 +198,9 @@ func emitWorkflowCompletionStats(
 				tag.WorkflowRunID(runID),
 				tag.WorkflowDomainName(domainName),
 				tag.WorkflowType(workflowType),
-				tag.ArchivalArchiveFailReason(*event.WorkflowExecutionContinuedAsNewEventAttributes.FailureReason),
+				//tag.ArchivalArchiveFailReason(*event.WorkflowExecutionContinuedAsNewEventAttributes.FailureReason),
 				tag.FailoverMsg(string(event.WorkflowExecutionContinuedAsNewEventAttributes.FailureDetails)),
-				tag.TimerTaskStatus(*event.WorkflowExecutionContinuedAsNewEventAttributes.BackoffStartIntervalInSeconds),
+				//tag.TimerTaskStatus(*event.WorkflowExecutionContinuedAsNewEventAttributes.BackoffStartIntervalInSeconds),
 			)
 			}
 			if event.WorkflowExecutionStartedEventAttributes != nil {
