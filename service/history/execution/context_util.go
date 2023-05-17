@@ -193,24 +193,24 @@ func emitWorkflowCompletionStats(
 		scope.IncCounter(metrics.WorkflowContinuedAsNew)
 		if event != nil {
 			if event.WorkflowExecutionContinuedAsNewEventAttributes != nil {
-			logger.Info("workflow continued as new with event attributes",
-				tag.WorkflowID(workflowID),
-				tag.WorkflowRunID(runID),
-				tag.WorkflowDomainName(domainName),
-				tag.WorkflowType(workflowType),
-				//tag.ArchivalArchiveFailReason(*event.WorkflowExecutionContinuedAsNewEventAttributes.FailureReason),
-				tag.FailoverMsg(string(event.WorkflowExecutionContinuedAsNewEventAttributes.FailureDetails)),
-				//tag.TimerTaskStatus(*event.WorkflowExecutionContinuedAsNewEventAttributes.BackoffStartIntervalInSeconds),
-			)
+				logger.Info("workflow continued as new with event attributes",
+					tag.WorkflowID(workflowID),
+					tag.WorkflowRunID(runID),
+					tag.WorkflowDomainName(domainName),
+					tag.WorkflowType(workflowType),
+					//tag.ArchivalArchiveFailReason(*event.WorkflowExecutionContinuedAsNewEventAttributes.FailureReason),
+					tag.FailoverMsg(string(event.WorkflowExecutionContinuedAsNewEventAttributes.FailureDetails)),
+					//tag.TimerTaskStatus(*event.WorkflowExecutionContinuedAsNewEventAttributes.BackoffStartIntervalInSeconds),
+				)
 			}
 			if event.WorkflowExecutionStartedEventAttributes != nil {
 				logger.Info("workflow continued as new with start attributes",
-				tag.WorkflowID(workflowID),
-				tag.WorkflowRunID(runID),
-				tag.WorkflowDomainName(domainName),
-				tag.WorkflowType(workflowType),
-				tag.WorkflowCronSchedule(event.WorkflowExecutionStartedEventAttributes.CronSchedule),
-			)
+					tag.WorkflowID(workflowID),
+					tag.WorkflowRunID(runID),
+					tag.WorkflowDomainName(domainName),
+					tag.WorkflowType(workflowType),
+					tag.WorkflowCronSchedule(event.WorkflowExecutionStartedEventAttributes.CronSchedule),
+				)
 			}
 		} else {
 			logger.Info("workflow continued as new",
