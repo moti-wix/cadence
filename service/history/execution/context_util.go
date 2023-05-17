@@ -191,15 +191,25 @@ func emitWorkflowCompletionStats(
 		)
 	case types.EventTypeWorkflowExecutionContinuedAsNew:
 		scope.IncCounter(metrics.WorkflowContinuedAsNew)
-		logger.Info("workflow continued as new",
-			tag.WorkflowID(workflowID),
-			tag.WorkflowRunID(runID),
-			tag.WorkflowDomainName(domainName),
-			tag.WorkflowType(workflowType),
-			tag.ArchivalArchiveFailReason(*event.WorkflowExecutionContinuedAsNewEventAttributes.FailureReason),
-			tag.FailoverMsg(string(event.WorkflowExecutionContinuedAsNewEventAttributes.FailureDetails)),
-			tag.TimerTaskStatus(*event.WorkflowExecutionContinuedAsNewEventAttributes.BackoffStartIntervalInSeconds),
-		)
+		if event != nil && event.WorkflowExecutionStartedEventAttributes != nil {
+			logger.Info("workflow continued as new",
+				tag.WorkflowID(workflowID),
+				tag.WorkflowRunID(runID),
+				tag.WorkflowDomainName(domainName),
+				tag.WorkflowType(workflowType),
+				tag.ArchivalArchiveFailReason(*event.WorkflowExecutionContinuedAsNewEventAttributes.FailureReason),
+				tag.FailoverMsg(string(event.WorkflowExecutionContinuedAsNewEventAttributes.FailureDetails)),
+				tag.TimerTaskStatus(*event.WorkflowExecutionContinuedAsNewEventAttributes.BackoffStartIntervalInSeconds),
+			)
+		} else {
+			logger.Info("workflow continued as new",
+				tag.WorkflowID(workflowID),
+				tag.WorkflowRunID(runID),
+				tag.WorkflowDomainName(domainName),
+				tag.WorkflowType(workflowType),
+			)
+		}
+
 	default:
 		scope.IncCounter(metrics.WorkflowCompletedUnknownType)
 		logger.Warn("Workflow completed with an unknown event type",
