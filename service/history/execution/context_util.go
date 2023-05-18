@@ -192,15 +192,15 @@ func emitWorkflowCompletionStats(
 	case types.EventTypeWorkflowExecutionContinuedAsNew:
 		scope.IncCounter(metrics.WorkflowContinuedAsNew)
 		logger.Info("workflow continued as new with event attributes",
-					tag.WorkflowID(workflowID),
-					tag.WorkflowRunID(runID),
-					tag.WorkflowDomainName(domainName),
-					tag.WorkflowType(workflowType),
+			tag.WorkflowID(workflowID),
+			tag.WorkflowRunID(runID),
+			tag.WorkflowDomainName(domainName),
+			tag.WorkflowType(workflowType),
 		)
 		if event.WorkflowExecutionContinuedAsNewEventAttributes != nil {
-			if event.WorkflowExecutionContinuedAsNewEventAttributes.FailureReason != nil && 
-			event.WorkflowExecutionContinuedAsNewEventAttributes.BackoffStartIntervalInSeconds != nil {
-			logger.Info("workflow continued as new with event attributes",
+			if event.WorkflowExecutionContinuedAsNewEventAttributes.FailureReason != nil &&
+				event.WorkflowExecutionContinuedAsNewEventAttributes.BackoffStartIntervalInSeconds != nil {
+				logger.Info("workflow continued as new with event attributes",
 					tag.WorkflowID(workflowID),
 					tag.WorkflowRunID(runID),
 					tag.WorkflowDomainName(domainName),
@@ -209,8 +209,8 @@ func emitWorkflowCompletionStats(
 					tag.FailoverMsg(string(event.WorkflowExecutionContinuedAsNewEventAttributes.FailureDetails)),
 					tag.TimerTaskStatus(*event.WorkflowExecutionContinuedAsNewEventAttributes.BackoffStartIntervalInSeconds),
 				)
-		} else {
-			logger.Info("workflow continued as new with event attributes",
+			} else {
+				logger.Info("workflow continued as new with event attributes",
 					tag.WorkflowID(workflowID),
 					tag.WorkflowRunID(runID),
 					tag.WorkflowDomainName(domainName),
@@ -220,13 +220,13 @@ func emitWorkflowCompletionStats(
 			}
 		}
 		if event.WorkflowExecutionStartedEventAttributes != nil {
-				logger.Info("workflow continued as new with start attributes",
-					tag.WorkflowID(workflowID),
-					tag.WorkflowRunID(runID),
-					tag.WorkflowDomainName(domainName),
-					tag.WorkflowType(workflowType),
-					tag.WorkflowCronSchedule(event.WorkflowExecutionStartedEventAttributes.CronSchedule),
-				)
+			logger.Info("workflow continued as new with start attributes",
+				tag.WorkflowID(workflowID),
+				tag.WorkflowRunID(runID),
+				tag.WorkflowDomainName(domainName),
+				tag.WorkflowType(workflowType),
+				tag.WorkflowCronSchedule(event.WorkflowExecutionStartedEventAttributes.CronSchedule),
+			)
 		}
 
 	default:
