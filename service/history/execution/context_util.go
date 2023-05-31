@@ -191,7 +191,7 @@ func emitWorkflowCompletionStats(
 		)
 	case types.EventTypeWorkflowExecutionContinuedAsNew:
 		scope.IncCounter(metrics.WorkflowContinuedAsNew)
-		logger.Info("workflow continued as new with event attributes",
+		logger.Info("workflow continued as new",
 			tag.WorkflowID(workflowID),
 			tag.WorkflowRunID(runID),
 			tag.WorkflowDomainName(domainName),
@@ -210,7 +210,7 @@ func emitWorkflowCompletionStats(
 					tag.TimerTaskStatus(*event.WorkflowExecutionContinuedAsNewEventAttributes.BackoffStartIntervalInSeconds),
 				)
 			} else {
-				logger.Info("workflow continued as new with event attributes",
+				logger.Info("workflow continued as new with NO event attributes",
 					tag.WorkflowID(workflowID),
 					tag.WorkflowRunID(runID),
 					tag.WorkflowDomainName(domainName),
