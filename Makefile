@@ -4,20 +4,7 @@ MAKEFLAGS += --no-builtin-rules
 
 default: help
 
-# ###########################################
-#                TL;DR DOCS:
-# ###########################################
-# - Targets should never, EVER be *actual source files*.
-#   Always use book-keeping files in $(BUILD).
-#   Otherwise e.g. changing git branches could confuse Make about what it needs to do.
-# - Similarly, prerequisites should be those book-keeping files,
-#   not source files that are prerequisites for book-keeping.
-#   e.g. depend on .build/fmt, not $(ALL_SRC), and not both.
-# - Be strict and explicit about prerequisites / order of execution / etc.
-# - Test your changes with `-j 27 --output-sync` or something!
-# - Test your changes with `make -d ...`!  It should be reasonable!
 
-# temporary build products and book-keeping targets that are always good to / safe to clean.
 BUILD := .build
 # bins that are `make clean` friendly, i.e. they build quickly and do not require new downloads.
 # in particular this should include goimports, as it changes based on which version of go compiles it,
@@ -28,42 +15,10 @@ BIN := $(BUILD)/bin
 STABLE_BIN := .bin
 
 
-# current (when committed) version of Go used in CI, and ideally also our docker images.
-# this generally does not matter, but can impact goimports output.
-# for maximum stability, make sure you use the same version as CI uses.
-#
-# this can _likely_ remain a major version, as fmt output does not tend to change in minor versions,
-# which will allow findstring to match any minor version.
-EXPECTED_GO_VERSION := go1.17
-CURRENT_GO_VERSION := $(shell go version)
-ifeq (,$(findstring $(EXPECTED_GO_VERSION),$(CURRENT_GO_VERSION)))
-# if you are seeing this warning: consider using https://github.com/travis-ci/gimme to pin your version
-$(warning Caution: you are not using CI's go version. Expected: $(EXPECTED_GO_VERSION), current: $(CURRENT_GO_VERSION))
-endif
 
-# ====================================
-# book-keeping files that are used to control sequencing.
-#
-# you should use these as prerequisites in almost all cases, not the source files themselves.
-# these are defined in roughly the reverse order that they are executed, for easier reading.
-#
-# recipes and any other prerequisites are defined only once, further below.
-# ====================================
 
-# all bins depend on: $(BUILD)/lint
-# note that vars that do not yet exist are empty, so any prerequisites defined below are ineffective here.
-$(BUILD)/lint: $(BUILD)/fmt # lint will fail if fmt fails, so fmt first
-$(BUILD)/proto-lint:
-$(BUILD)/fmt: $(BUILD)/copyright # formatting must occur only after all other go-file-modifications are done
-$(BUILD)/copyright: $(BUILD)/codegen # must add copyright to generated code, sometimes needs re-formatting
-$(BUILD)/codegen: $(BUILD)/thrift $(BUILD)/protoc
-$(BUILD)/thrift: $(BUILD)/go_mod_check
-$(BUILD)/protoc: $(BUILD)/go_mod_check
-$(BUILD)/go_mod_check:
 
-# ====================================
-# helper vars
-# ====================================
+
 
 # a literal space value, for makefile purposes.
 # the full "trailing # one space after $(null)" is necessary for correct behavior,
